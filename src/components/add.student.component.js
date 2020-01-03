@@ -97,7 +97,7 @@ export default class AddStudent extends Component {
     axios.post('http://localhost:5000/students/add', student).then(res => {
       alert(res.data);
       this.clearFields();
-    });
+    }).catch(err => alert('Validation Error: Email must be unique and All Fields are required and should be at least 6 characters.'));
   }
 
   render() {

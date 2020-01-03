@@ -75,7 +75,8 @@ export default class EditStudent extends Component {
       birthday: this.state.birthday,
     }
 
-    axios.post('http://localhost:5000/students/update/'+this.props.match.params.id, student).then(res => alert(res.data));
+    axios.post('http://localhost:5000/students/update/'+this.props.match.params.id, student).then(res => alert(res.data))
+    .catch(err => alert('Validation Error: Email must be unique and All Fields are required and should be at least 6 characters.'));
   }
 
   render() {

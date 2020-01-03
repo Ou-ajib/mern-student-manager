@@ -113,7 +113,7 @@ export default class AddProfessor extends Component {
     axios.post('http://localhost:5000/subjects/add', subject).then(res => {
       this.getData();
       alert(res.data);
-    });
+    }).catch(err => alert('Validation Error: All Fields are required.'));
   }
 
   onSubmit(e) {
@@ -128,7 +128,7 @@ export default class AddProfessor extends Component {
     axios.post('http://localhost:5000/professors/add', professor).then(res => {
       this.getData();
       alert(res.data);
-    });
+    }).catch(err => alert('Validation Error: All Fields are required.'));
   }
 
   render() {

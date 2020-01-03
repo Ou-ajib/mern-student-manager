@@ -36,9 +36,14 @@ export default class Welcome extends Component {
       }
       // console.log(user);
       axios.post('http://localhost:5000/admins/update/'+this.state.user._id, user).then(res => {
-        // console.log(res.data);
-        this.props.onUpdateUser(user);
-      }).catch(err => console.log(err));
+        const newuser = {
+          _id: this.props.user._id,
+          email: this.state.email,
+          username: this.state.username,
+          password: this.state.newpassword,
+        }
+        this.props.onUpdateUser(newuser);
+      }).catch(err => alert('Validation Error: Email must be unique and All Fields are required and should be at least 6 characters.'));
     } else alert('Incorrect password');
   }
 
@@ -51,10 +56,9 @@ export default class Welcome extends Component {
         password: this.state.pswrd,
       }
       axios.post('http://localhost:5000/admins/add', admin).then(res => {
-        // console.log('Admin added');
         this.props.onUpdateUser(this.props.user);
         alert('Admin Added!');
-      }).catch(err => console.log(err));
+      }).catch(err => alert('Validation Error: Email must be unique and All Fields are required and should be at least 6 characters.'));
     }else alert('Password and Repeat Password Fields to not match');
   }
 
