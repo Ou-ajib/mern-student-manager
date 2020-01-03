@@ -87,7 +87,7 @@ export default class EditStudent extends Component {
 
     axios.post('http://localhost:5000/professors/update/'+this.props.match.params.id, prof).then(res => {
       axios.post('http://localhost:5000/subjects/update/'+this.state.subj._id, subject).then(res => {
-        alert(res.data);
+        alert('Professor and Subject Updated');
       }).catch(err => console.log(err));
     });
 
