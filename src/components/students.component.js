@@ -7,7 +7,7 @@ const Exercise = props => (
   <tr>
     <td>{props.student.name}</td>
     <td>{props.major}</td>
-    <td>{isNaN(props.mark) ? '-' : props.mark}</td>
+    <td>{isNaN(props.mark) ? '-' : parseFloat(props.mark).toFixed(2)}</td>
     <td>{props.student.email}</td>
     <td>{props.student.phone}</td>
     <td>{props.student.birthday.substring(0,10)}</td>
