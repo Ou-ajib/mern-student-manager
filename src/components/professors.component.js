@@ -83,6 +83,7 @@ export default class Professors extends Component {
           <label>Search with Professor Name or Subject: </label>
           <input  type="text"
               className="form-control"
+              placeholder='Professro Name or Subject'
               value={this.state.searchText}
               onChange={this.onChangeSearch}
               />

@@ -97,9 +97,10 @@ export default class Students extends Component {
         <h1>EST Essouira Students & Marks:</h1>
         <hr/>
         <div className="form-group"> 
-          <label>Search with Student Name or Phone Number: </label>
+          <label>Search with Student Name or Major: </label>
           <input  type="text"
               className="form-control"
+              placeholder='Student Name or Major'
               value={this.state.searchText}
               onChange={this.onChangeSearch}
               />
