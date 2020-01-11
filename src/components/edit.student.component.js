@@ -159,7 +159,7 @@ export default class EditStudent extends Component {
             const body = {mark: this.state.studentMarks[i].mark}
             axios.post('http://localhost:5000/marks/edit/'+this.props.match.params.id+'/'+e.subjectID, body).then(res => {
               alert(res.data);
-            });
+            }).catch(err => alert('Validation Error'));
           }}>
             <div>
               <div className="form-group">
