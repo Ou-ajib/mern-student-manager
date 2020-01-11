@@ -28,12 +28,19 @@ export default class Professors extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteProf = this.deleteProf.bind(this)
+    this.deleteProf = this.deleteProf.bind(this);
+    this.onChangeSearch = this.onChangeSearch.bind(this);
 
     this.state = {
       professors: [],
       subjects: [],
+      searchText: '',
     };
+  }
+  onChangeSearch(e){
+    this.setState({
+      searchText: e.target.value,
+    });
   }
 
   componentDidMount() {
@@ -54,7 +61,10 @@ export default class Professors extends Component {
   }
 
   professorsList() {
-    return this.state.professors.map(prof => {
+    return this.state.professors.filter(s => (
+      s.name.toLowerCase().includes(this.state.searchText.toLowerCase()) ||
+      this.state.subjects.filter(subject => s._id === subject.professor).map(subject => subject.name)[0].toLowerCase().includes(this.state.searchText.toLowerCase()) ||
+      this.state.searchText.length === 0)).map(prof => {
       return <Exercise prof={prof} deleteProf={this.deleteProf} key={prof._id} subject={this.state.subjects.filter(subject => prof._id === subject.professor).map(subject => subject.name)}/>;
     });
   }
@@ -69,6 +79,14 @@ export default class Professors extends Component {
         </Link>
         <h1>EST Essouira Professors & Subjects:</h1>
         <hr/>
+        <div className="form-group"> 
+          <label>Search with Professor Name or Subject: </label>
+          <input  type="text"
+              className="form-control"
+              value={this.state.searchText}
+              onChange={this.onChangeSearch}
+              />
+        </div>
         <table className="table">
           <thead className="thead-light">
             <tr>

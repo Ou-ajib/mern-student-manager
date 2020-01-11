@@ -21,6 +21,10 @@ export default class EditStudent extends Component {
       email: '',
       phone: '',
       birthday: new Date(),
+      subjects: [],
+      subjectsIds: [],
+      marks: [],
+      studentMarks: [],
     }
   }
 
@@ -33,7 +37,29 @@ export default class EditStudent extends Component {
             phone: response.data.phone,
             birthday: new Date(response.data.birthday)
         });
-    }).catch(function (error) {console.log(error);});
+        axios.get('http://localhost:5000/majors/'+this.state.major).then(res => {
+          this.setState({subjectsIds: res.data.subjects});
+          axios.get('http://localhost:5000/subjects').then(r => {
+            this.setState({
+              subjects: r.data.filter(e => this.state.subjectsIds.includes(e._id)),
+            });
+            axios.get('http://localhost:5000/marks').then(res => {
+              this.setState({
+                marks: res.data.filter(e => (e.student === this.props.match.params.id)),
+              });
+              var s = this.state.subjects.map(s => {
+                return {
+                  subject: s.name,
+                  subjectID: s._id,
+                  mark: this.state.marks.filter(m => m.subject === s._id).map(m => m.mark)[0] ?? '',
+                }
+              });
+              this.setState({studentMarks: s});
+            });
+          });
+        }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+
   }
 
   onChangeMajor(e) {
@@ -120,11 +146,43 @@ export default class EditStudent extends Component {
             />
           </div>
         </div>
-
+        {/* <h2>Marks</h2> */}
         <div className="form-group">
           <input type="submit" value="Edit Student" className="btn btn-lg btn-dark" />
         </div>
       </form>
+      <hr/>
+      {
+        this.state.studentMarks.map((e, i) => 
+          <form key={i} onSubmit={(ev) => {
+            ev.preventDefault();
+            const body = {mark: this.state.studentMarks[i].mark}
+            axios.post('http://localhost:5000/marks/edit/'+this.props.match.params.id+'/'+e.subjectID, body).then(res => {
+              alert(res.data);
+            });
+          }}>
+            <div>
+              <div className="form-group">
+                <label>{e.subject+" :"}</label>
+                <input  type="text"
+                    required
+                    className="form-control"
+                    value={e.mark}
+                    onChange={(ev) => {
+                      const l = this.state.studentMarks;
+                      l[i].mark = ev.target.value;
+                      this.setState({
+                        studentMarks: l,
+                      });
+                    }}
+                />
+              </div>  
+              <div className="form-group">
+                <input type="submit" value="Edit Mark" className="btn btn-lg btn-dark" />
+              </div>
+            </div>
+          </form>
+        )}
     </div>
     )
   }

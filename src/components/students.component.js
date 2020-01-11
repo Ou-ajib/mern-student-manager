@@ -29,7 +29,8 @@ export default class Students extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteStudent = this.deleteStudent.bind(this)
+    this.deleteStudent = this.deleteStudent.bind(this);
+    this.onChangeSearch = this.onChangeSearch.bind(this);
 
     this.state = {
       students: [],
@@ -37,7 +38,14 @@ export default class Students extends Component {
       marks: [],
       avrgMarks:[],
       subjects: [],
+      searchText: '',
     };
+  }
+
+  onChangeSearch(e){
+    this.setState({
+      searchText: e.target.value,
+    });
   }
 
   componentDidMount() {
@@ -69,7 +77,10 @@ export default class Students extends Component {
   }
 
   studentsList() {
-    return this.state.students.map(currentStudent => {
+    return this.state.students.filter(s => 
+      (s.name.toLowerCase().includes(this.state.searchText.toLowerCase())
+      || this.state.majors.filter(major => s.major === major._id).map(major => major.name)[0].toLowerCase().includes(this.state.searchText.toLowerCase())
+      || this.state.searchText.length === 0)).map(currentStudent => {
       return <Exercise student={currentStudent} deleteStudent={this.deleteStudent} key={currentStudent._id} major={this.state.majors.filter(major => currentStudent.major === major._id).map(major => major.name)}
         mark={this.state.avrgMarks.filter(mark => mark.student === currentStudent._id).map(mark => mark.mark)}/>;
     });
@@ -85,6 +96,14 @@ export default class Students extends Component {
         </Link>
         <h1>EST Essouira Students & Marks:</h1>
         <hr/>
+        <div className="form-group"> 
+          <label>Search with Student Name or Phone Number: </label>
+          <input  type="text"
+              className="form-control"
+              value={this.state.searchText}
+              onChange={this.onChangeSearch}
+              />
+        </div>
         <table className="table">
           <thead className="thead-light">
             <tr>
